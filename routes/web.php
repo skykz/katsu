@@ -11,6 +11,10 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use TCG\Voyager\Facades\Voyager;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,4 +26,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
+    Route::get('order', 'OrderController@contact');
+    Route::post('order', ['as'=>'contact.store','uses'=>'OrderController@contactPost']);
 });
