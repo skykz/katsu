@@ -1,167 +1,169 @@
-{{--<!DOCTYPE html>--}}
-{{--<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">--}}
-{{--    <head>--}}
-{{--        <meta charset="utf-8">--}}
-{{--        <meta name="viewport" content="width=device-width, initial-scale=1">--}}
 
-{{--        <title>Laravel</title>--}}
+@extends('layouts.app')
+@section('main')
 
-{{--        <!-- Fonts -->--}}
-{{--        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">--}}
+<div class="container-full">
 
-{{--        <!-- Styles -->--}}
-{{--        <style>--}}
-{{--            html, body {--}}
-{{--                background-color: #fff;--}}
-{{--                color: #636b6f;--}}
-{{--                font-family: 'Nunito', sans-serif;--}}
-{{--                font-weight: 200;--}}
-{{--                height: 100vh;--}}
-{{--                margin: 0;--}}
-{{--            }--}}
+    <div class="category-switcher">
+        <div class="nav-container">
+            <ul class="nav">
+                @for($i = 0; $i < count($result['category']); $i++)
+{{--                    current-menu-item current_page_item--}}
+                @if($result['category'][$i]->id == 4 && Request::is('/'))
 
-{{--            .full-height {--}}
-{{--                height: 100vh;--}}
-{{--            }--}}
+                        <li id="menu-item-102" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-102">
+                        <a href="{{url('category')}}/{{$result['category'][$i]->id}}">{{$result['isRu'][0]->is_ru==1?$result['category'][$i]->name_ru:$result['category'][$i]->name_en}}</a></li>
+                    @else
+                    <li id="menu-item-102" class="menu-item menu-item-type-custom menu-item-object-custom {{ Request::is('category/'.$result['category'][$i]->id) ? 'current-menu-item current_page_item' : '' }} menu-item-home menu-item-102">
+                        <a href="{{url('category')}}/{{$result['category'][$i]->id}}">{{$result['isRu'][0]->is_ru==1?$result['category'][$i]->name_ru:$result['category'][$i]->name_en}}</a></li>
 
-{{--            .flex-center {--}}
-{{--                align-items: center;--}}
-{{--                display: flex;--}}
-{{--                justify-content: center;--}}
-{{--            }--}}
-
-{{--            .position-ref {--}}
-{{--                position: relative;--}}
-{{--            }--}}
-
-{{--            .top-right {--}}
-{{--                position: absolute;--}}
-{{--                right: 10px;--}}
-{{--                top: 18px;--}}
-{{--            }--}}
-
-{{--            .content {--}}
-{{--                text-align: center;--}}
-{{--            }--}}
-
-{{--            .title {--}}
-{{--                font-size: 84px;--}}
-{{--            }--}}
-
-{{--            .links > a {--}}
-{{--                color: #636b6f;--}}
-{{--                padding: 0 25px;--}}
-{{--                font-size: 13px;--}}
-{{--                font-weight: 600;--}}
-{{--                letter-spacing: .1rem;--}}
-{{--                text-decoration: none;--}}
-{{--                text-transform: uppercase;--}}
-{{--            }--}}
-
-{{--            .m-b-md {--}}
-{{--                margin-bottom: 30px;--}}
-{{--            }--}}
-{{--        </style>--}}
-{{--    </head>--}}
-{{--    <body>--}}
-{{--        <div class="flex-center position-ref full-height">--}}
-{{--            @if (Route::has('login'))--}}
-{{--                <div class="top-right links">--}}
-{{--                    @auth--}}
-{{--                        <a href="{{ url('/home') }}">Home</a>--}}
-{{--                    @else--}}
-{{--                        <a href="{{ route('login') }}">Login</a>--}}
-
-{{--                        @if (Route::has('register'))--}}
-{{--                            <a href="{{ route('register') }}">Register</a>--}}
-{{--                        @endif--}}
-{{--                    @endauth--}}
-{{--                </div>--}}
-{{--            @endif--}}
-
-{{--            <div class="content">--}}
-{{--                <div class="title m-b-md">--}}
-{{--                    <a href="http://127.0.0.1:8000/admin">--}}
-{{--                    <img src="{{asset('images/logo.svg')}}" alt="logo" width="300" height="150"/><br>--}}
-{{--                    <img src="{{asset('images/full-logo.svg')}}" alt="logo"width="200" height="100"/>--}}
-{{--                    </a>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </body>--}}
-{{--</html>--}}
-<html lang="en">
-<head>
-    <title>Laravel Multiple Image Upload with Preview - W3Adda</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-</head>
-<body>
-
-<div class="container">
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-    @if (count($errors) > 0)
-        <div class="alert alert-danger">
-            <strong>Whoops!</strong> Some problems with your input.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
+                    @endif
+                @endfor
             </ul>
         </div>
-    @endif
-    <h3 class="jumbotron">Laravel Multiple Image Upload with Preview - W3Adda</h3>
-    <form method="post" action="{{url('multiple-image-upload')}}" enctype="multipart/form-data">
+    </div>
+
+    <main class="posts-list grid">
+        @for($i = 0; $i < count($result['portfolio']); $i++)
+            <figure class="post-preview item">
+            <div class="content">
+                <a href="{{url('/detail')}}/{{$result['portfolio'][$i]->id}}">
+                    <img width="900" height="900" src="{{asset('storage')}}/{{$result['portfolio'][$i]->image}}" class="post-preview__img wp-post-image" alt="" sizes="(max-width: 900px) 100vw, 900px" />
+                    <div class="post-preview__title-wrapper">
+                        <figcaption class="post-preview__title">{{$result['isRu'][0]->is_ru==1?$result['portfolio'][$i]->title_ru:$result['portfolio'][$i]->title_en}}</figcaption>
+                    </div>
+                </a>
+            </div>
+        </figure>
+        @endfor
+    </main>
+</div>
+<div id="aboutUsBlock" class="aboutUs">
+    <div class="side-name sideName_animation-active">
+        <div class="vertical-text-name">{{$result['isRu'][0]->is_ru==1?('О Нас'):('About Us')}}</div>
+        <hr class="side-line">
+    </div>
+    <div class="aboutUsBlock" id="aboutUsTrigger">
+        <div class="aboutUsBlock_line aboutUs_animation-active">
+            <hr>
+        </div>
+        <div class="aboutUsBlock_content">
+            <div class="aboutUsBlock_left aboutUs_animation-active">
+                <img class="aboutUsBlock_logo" src="{{asset('images/logo.svg')}}" width="350px"
+                     alt="KOSUGIGATSU logo"></div>
+            <div class="aboutUsBlock_right">
+                <div class="aboutUs_textWrap aboutUs_animation-active">
+                    <div class="aboutUs_textRow">
+                        <u class="aboutUs_innerText">{{ $result['isRu'][0]->is_ru==1?$result['about'][0]->first_title_rus:$result['about'][0]->first_title_en}}</u>
+                    </div>
+                    <div class="aboutUs_textRow aboutUs_textRow-height "></div>
+                    <div class="aboutUs_textRow"><u class="aboutUs_innerText">{{$result['isRu'][0]->is_ru==1?$result['about'][0]->second_title_rus:$result['about'][0]->second_title_en }}</u></div>
+                    <div class="aboutUs_textRow aboutUs_textRow-height "></div>
+                    <div class="aboutUs_textRow"><u class="aboutUs_innerText">{{$result['isRu'][0]->is_ru==1?$result['about'][0]->third_title_rus:$result['about'][0]->third_title_en}}</u></div>
+                    <div class="aboutUs_textRow aboutUs_textRow-height "></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="teamBlock" class="team">
+    <div class="side-name sideName_animation-active">
+        <div class="vertical-text-name">{{$result['isRu'][0]->is_ru==1?('Команда'):('Team')}}</div>
+        <hr class="side-line">
+    </div>
+    <div class="teamLegendDesktop">
+        <div class="teamLegendDesktop_left">
+            <div class="animated fadeIn" style="animation-duration: 1s;">
+                <div class="teamLegendDesktop_mainText">
+                    @for($i = 0; $i < count($result['team']); $i++)
+                        <span class="spanText text{{$i}}">{{$result['isRu'][0]->is_ru==1?$result['team'][$i]->body_ru:$result['team'][$i]->body_en}}<br> </span>
+                    @endfor
+                </div>
+            </div>
+{{--            <img src="{{asset('images/logo.svg')}}" alt="Katsu logo" style="height: 20px;">--}}
+        </div>
+        <div class="scrollmenu">
+            <div class="teamLegendDesktop_right">
+                @for($i = 0; $i < count($result['team']); $i++)
+                    <div class="teamDesktop_member" data-id="{{$i}}"
+                         style="background-image: url({{asset('storage')."/".str_replace('\\', '/', $result['team'][$i]->image)}});">
+                        <p>{{$result['isRu'][0]->is_ru==1?$result['team'][$i]->full_name_ru:$result['team'][$i]->full_name_en}}</p>
+                    </div>
+                @endfor
+            </div>
+        </div>
+    </div>
+</div>
+<div id="contactsBlock" class="contacts">
+    <div class="contactsView">
+        <div class="contacts_left">
+            <div class="map" id="myMap" style="position: relative; overflow: hidden;">
+                <div class="gm-err-container">
+                    <div class="gm-err-content">
+                        <div class="gm-err-icon">
+                            <script type="text/javascript" charset="utf-8"
+                                    async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A5c252bc2d2d142f74b45564b8494d872947bbeb7461d2134f046e375c20b485b&amp;width=730&amp;height=350&amp;lang=ru_RU&amp;scroll=false"></script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="contacts_right">
+            <div class="contactsInfo">
+                <div class="animated fadeIn" style="animation-duration: 1s;">
+                    <div class="slogan">{{$result['isRu'][0]->is_ru==1?('Заинтересованы?'):('Are you interested?')}}<br>{{$result['isRu'][0]->is_ru==1?('Свяжитесь с нами.'):('Call to us.')}}</div>
+                </div>
+                <div class="telephone animated fadeIn" style="animation-duration: 1s;"><a
+                        href="tel: +7(701)205-10-77">{{$result['contact'][0]->tel_number}}</a></div>
+                <div class="animated fadeIn" style="animation-duration: 1s;">
+                    <div class="contacts_logo"><img src="{{asset('images/logo.svg')}}" alt="Katsu" width="150px"></div>
+                </div>
+                <div class="animated fadeIn" style="animation-duration: 1s;">
+                    <div class="address">{{$result['contact'][0]->address}}<br><a
+                            href="mailto:%20info@katsu.kz">{{$result['contact'][0]->email}}</a></div>
+                </div>
+                <div class="animated fadeIn" style="animation-duration: 1s;">
+                    <div>
+                        <button id="contactBtn" class="contacts_button hvr-sweep-to-bottom">{{$result['isRu'][0]->is_ru==1?('Связаться'):('Contact')}}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="side-socials">
+                <div class="vertical-text-socials">{{$result['isRu'][0]->is_ru==1?('ДИЗАЙН БЮРО'):('DESIGN BUREAU')}}</div>
+                <hr class="short-line">
+                <div class="short-social-icons">
+                    <div class="icon"><a href="{{$result['contact'][0]->instagram_link}}" target="_blank"
+                                         rel="noopener noreferrer"><img src="{{asset('icons/instagram.svg')}}"
+                                                                        alt="Instagram logo"></a></div>
+                    <div class="icon"><a href="{{$result['contact'][0]->whatsapp_link}}" target="_blank" rel="noopener noreferrer"><img
+                                src="{{asset('icons/whatsapp.svg')}}" alt="Whatsapp logo"></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="contactFormBackground"></div>
+<div id="contactForm">
+    <div style="display: flex; justify-content: space-between;">
+        <h2>{{$result['isRu'][0]->is_ru==1?('Оставьте заявку'):('Leave a request')}}</h2>
+        <a href="#close" id="closeModal"><img src="{{asset('icons/cross.svg')}}" width="18px" height="18px" alt="закрыть"/></a>
+    </div>
+    <p style="padding-bottom: 5px;padding-top: 5px;">{{$result['isRu'][0]->is_ru==1?('Мы перезвоним Вам в течении дня'):('We will call you back during the day.')}}</p>
+    <br>
+    <form action="{{route('sendEmail')}}" method="post">
+        <label>
+            <input placeholder="{{$result['isRu'][0]->is_ru==1?('Ваше имя'):('Your name')}}" type="text" name="name" required />
+        </label>
+        <label>
+            <input placeholder="{{$result['isRu'][0]->is_ru==1?('Телефон номер'):('Telephone number')}}" type="number" name="number" required />
+        </label>
+        <label>
+            <textarea placeholder="{{$result['isRu'][0]->is_ru==1?('Комментарий к заявке...'):('Leave comment on the application ...')}}" name="message"></textarea>
+        </label>
         @csrf
-        <div class="row">
-            <div class="col-md-4"></div>
-            <div class="form-group col-md-4">
-                <input type="file" id="profileImage" name="profileImage[]" class="form-control" multiple="">
-            </div>
-        </div>
-        <div class="row" id="preview_img">
-
-        </div>
-        <div class="row">
-            <div class="col-md-4"></div>
-            <div class="form-group col-md-4">
-                <button type="submit" class="btn btn-success" style="margin-top:10px">Upload Image</button>
-            </div>
-        </div>
-
+        <button id="submit"   type="submit"> {{$result['isRu'][0]->is_ru==1?('Отправить'):('Send')}} </button>
     </form>
 </div>
-</body>
-</html>
-<script>
-
-    $(document).ready(function(){
-        $('#profileImage').on('change', function(){ //on file input change
-            if (window.File && window.FileReader && window.FileList && window.Blob) //check File API supported browser
-            {
-                var data = $(this)[0].files; //this file data
-
-                $.each(data, function(index, file){ //loop though each file
-                    if(/(\.|\/)(gif|jpe?g|png)$/i.test(file.type)){ //check supported file type
-                        var fRead = new FileReader(); //new filereader
-                        fRead.onload = (function(file){ //trigger function on successful read
-                            return function(e) {
-                                var img = $('<img width="250" height="150"/>').addClass('thumb').attr('src', e.target.result); //create image element
-                                $('#preview_img').append(img); //append image to output element
-                            };
-                        })(file);
-                        fRead.readAsDataURL(file); //URL representing the file's data.
-                    }
-                });
-
-            }else{
-                alert("Your browser doesn't support File API!"); //if File API is absent
-            }
-        });
-    });
-
-</script>
+<!--<br>-->
+@endsection

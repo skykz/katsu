@@ -13,20 +13,23 @@ class MainController extends Controller
     public function index(){
       $data = \App\Portfolio::get();
       $category = DB::table('categories')->get();
-      $result = array(
-          "portfolio"=>[
-              'image' => $data
-          ],
+      $contact = DB::table('contacts')->get();
+      $about = DB::table('about_us')->get();
+      $team = DB::table('pages')->get();
+
+        $result = array(
+          "portfolio"=> $data, /// на фотки надо поставить storage/folder
           "category"=>$category,
+          "team"=>$team,
+          "contact"=>$contact,
+          "about"=>$about
       );
       return response()->json($result,200);
     }
 
-    //TODO: function to compress images
-
     public function sendOrder(Request $request)
     {
-        $this->validate($request, [ 'name' => 'required', 'number' => 'required', 'message' ]);
+        $this->validate($request, [ 'name' => 'required', 'number' => 'required']);
         $newOrder = new Order();
         $newOrder->name = $request->name;
         $newOrder->telephone_number = $request->number;
@@ -44,7 +47,15 @@ class MainController extends Controller
 //                $message->from('Info@katsu.kz');
 //                $message->to('Info@katsu.kz', 'Привет!')->subject('Новая заявка пришла.');
 //            });
-        return response($request,200);
+        return redirect('/')->with('status','sent');
+
+    }
+
+
+    public function getDetailById($id){
+        $detail = \App\Portfolio::find($id);
+
+        return response()->json($detail,200);
     }
 
 }

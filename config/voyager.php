@@ -99,7 +99,7 @@ return [
         /*
          * Set whether or not the multilingual is supported by the BREAD input.
          */
-        'enabled' => true,// changed by Yerassyl
+        'enabled' => true,
 
         /*
          * Select default language

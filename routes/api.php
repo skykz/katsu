@@ -13,11 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//TODO: make 4 api for front
 
-Route::get('get/all','Api\MainController@index');
+Route::group(['middleware' => 'cors'],function (){
+    Route::get('get/all','Api\MainController@index');
+    Route::get('getById/{id}','Api\MainController@getDetailById');
+    Route::post('send/order','Api\MainController@sendOrder');
+});
 
-Route::post('send/order','Api\MainController@sendOrder');
 //Route::get('contact', 'ContactController@contact');
 //Route::post('contact', ['as'=>'contact.store','uses'=>'ContactController@contactPost']);
 

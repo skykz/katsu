@@ -14,14 +14,20 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use TCG\Voyager\Facades\Voyager;
+use App\Http\Controllers\Api;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('/');
+Route::get('/category/{id}', 'HomeController@getCategoryById')->name('getCategoryById');
+
+Route::get('/setLang/{name}', 'HomeController@setLang');
+Route::get('/detail/{id}', 'HomeController@getPortfolio')->name('/detail/{id}');
+Route::post('sendEmail', 'Api\MainController@sendOrder')->name('sendEmail');
+
+
 
 
 Route::group(['prefix' => 'admin'], function () {
